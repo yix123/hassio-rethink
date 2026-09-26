@@ -1,0 +1,6 @@
+source/.git
+source/node_modules
+source/dist
+source/state
+**/*.key
+**/*.cert
