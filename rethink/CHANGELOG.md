@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.12
+
+- Replace the experimental fridge door mapping with aligned payload field 56: zero is closed, any nonzero value is open.
+- Account for the different payload starts in both observed status packet formats.
+
 ## 1.0.9
 
 - Include application source in this repository so changes can be built directly by HAOS.
