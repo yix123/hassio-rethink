@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.15
+
+- Give the LG cloud bridge separate DNS-over-HTTPS resolvers (Cloudflare, then Google) so local LG hostname redirects do not send bridge traffic back to Rethink.
+
 ## 1.0.14
 
 - Remove the experimental label from Fridge door after the user confirmed open/close detection.

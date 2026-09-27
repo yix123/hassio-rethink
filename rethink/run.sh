@@ -32,7 +32,10 @@ jq --slurpfile service "$MQTT_SERVICE" '{
   thinq1_https_port: 46030,
   thinq1_port: 47878,
   management_port: 44401,
-  bridge: {storage_path: "/data/state"},
+  bridge: {
+    storage_path: "/data/state",
+    dns: ["https://1.1.1.1/dns-query", "https://8.8.8.8/dns-query"]
+  },
   log: ["status", "incoming", "HTTPS", "publish", "MGMT"]
 }' /data/options.json > /data/config.json
 
