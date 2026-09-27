@@ -28,6 +28,7 @@ the second one is the model it is sold as.
 
 | ThinQ model     | Appliance                                                  | Support                                                                                     |
 | --------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| 2REF11EIDG\_\_4 | LG refrigerator                                            | 🫤 preliminary support: freezer setpoint; experimental fridge door candidate                 |
 | 2REF11EIDA\_\_4 | LF28H8330S, Standard-Depth 4-Door French Door Refrigerator | 🫤 preliminary support                                                                      |
 | 2RES1VE61NFA2   | GSJV70PZTE, Side by Side Refrigerator                      | 🫤 preliminary support                                                                      |
 | 2REB1GLVB1\_\_2 | GSB470BASZ, American Style Side by Side Refrigerator       | 🫤 preliminary support                                                                      |
