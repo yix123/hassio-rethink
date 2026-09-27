@@ -7,3 +7,4 @@
 - Install locked dependencies with npm ci.
 - Use Node.js 22.
 - Make MQTT connection and credentials configurable; generate JSON with jq.
+- Discover the existing MQTT service through Supervisor when no URL is supplied.

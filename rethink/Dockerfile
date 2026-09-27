@@ -1,6 +1,6 @@
 FROM node:22-alpine
 
-RUN apk add --no-cache openssl jq bash
+RUN apk add --no-cache openssl jq bash curl
 WORKDIR /app
 COPY source/ /app/
 ENV SKIP_GIT_HOOKS=1
