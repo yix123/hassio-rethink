@@ -12,7 +12,7 @@ The Dockerfile builds this copy without downloading another Git repository.
 
 1. Edit rethink/source/ for application changes, or rethink/ for packaging changes.
 2. Bump version in rethink/config.yaml and update rethink/CHANGELOG.md.
-3. Commit and push to the private repository.
+3. Commit and push to the repository.
 4. Refresh the HAOS store and install the offered update.
 
 Keep credentials in HAOS options, never in this repository.
