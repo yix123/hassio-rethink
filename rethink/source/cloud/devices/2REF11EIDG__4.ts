@@ -23,6 +23,8 @@ const FRAME_CLASS = 0x10
 const FRAME_ENVELOPE = 0x0a
 const STATUS_VARIANTS = [0x0a, 0x0b]
 const FREEZER_PAYLOAD_OFFSET = 5
+// User-selected fridge setpoint hypothesis: raw 7 corresponds to the known 3 C setting.
+const FRIDGE_PAYLOAD_OFFSET = 6
 const DOOR_PAYLOAD_OFFSET = 56
 
 const FREEZER_RAW_MIN = 1
@@ -38,6 +40,14 @@ export default class Device extends AABBDevice {
             allowExtendedType({
                 ...this.deviceConfig,
                 components: {
+                    fridge_setpoint: {
+                        platform: 'sensor',
+                        device_class: 'temperature',
+                        unit_of_measurement: '°C',
+                        unique_id: '$deviceid-fridge_setpoint',
+                        state_topic: '$this/fridge_setpoint',
+                        name: 'Fridge setpoint',
+                    },
                     freezer_setpoint: {
                         platform: 'sensor',
                         device_class: 'temperature',
@@ -77,6 +87,12 @@ export default class Device extends AABBDevice {
         // raw range. Even values decode to half-degree setpoints.
         if (freezerRaw >= FREEZER_RAW_MIN && freezerRaw <= FREEZER_RAW_MAX) {
             this.publishProperty('freezer_setpoint', -(freezerRaw + 29) / 2)
+        }
+
+        const fridgeRaw = buf[payloadStart + FRIDGE_PAYLOAD_OFFSET]
+        // Related fridge profile's Celsius setpoint mapping: raw 1..13 => 6..0 C.
+        if (fridgeRaw >= 1 && fridgeRaw <= 13) {
+            this.publishProperty('fridge_setpoint', (13 - fridgeRaw) / 2)
         }
 
         this.publishProperty('door', buf[doorOffset] === 0 ? 'OFF' : 'ON')

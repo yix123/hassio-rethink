@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.14
+
+- Add a read-only fridge setpoint sensor using aligned payload field 6 and the related fridge Celsius mapping.
+
 ## 1.0.13
 
 - Align freezer setpoint decoding across both status packet formats using payload field 5.
