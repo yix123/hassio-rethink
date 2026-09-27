@@ -11,7 +11,8 @@ import AABBDevice from './aabb_device'
 // (AA is byte 0); AABBDevice strips the first two and last two bytes before this class
 // receives the buffer, so subtract two when indexing `buf`.
 //
-// Observed freezer setpoint: wire byte 21 was 0x05 at -17 C and 0x07 at -18 C.
+// Observed freezer setpoint: aligned payload field 5 was 0x05 at -17 C and
+// 0x07 at -18 C (wire byte 20 in 0x0A frames, byte 21 in 0x0B frames).
 // The related 2REF profile's freezer conversion fits both observations:
 //   C = -(raw + 29) / 2.
 //
@@ -21,7 +22,7 @@ import AABBDevice from './aabb_device'
 const FRAME_CLASS = 0x10
 const FRAME_ENVELOPE = 0x0a
 const STATUS_VARIANTS = [0x0a, 0x0b]
-const FREEZER_SETPOINT_OFFSET = 19 // existing freezer mapping: wire byte 21
+const FREEZER_PAYLOAD_OFFSET = 5
 const DOOR_PAYLOAD_OFFSET = 56
 
 const FREEZER_RAW_MIN = 1
@@ -71,7 +72,7 @@ export default class Device extends AABBDevice {
         const doorOffset = payloadStart + DOOR_PAYLOAD_OFFSET
         if (buf.length <= doorOffset) return
 
-        const freezerRaw = buf[FREEZER_SETPOINT_OFFSET]
+        const freezerRaw = buf[payloadStart + FREEZER_PAYLOAD_OFFSET]
         // Match 2REF11EBIVPC4's raw-to-Celsius formula for every value in the supported
         // raw range. Even values decode to half-degree setpoints.
         if (freezerRaw >= FREEZER_RAW_MIN && freezerRaw <= FREEZER_RAW_MAX) {

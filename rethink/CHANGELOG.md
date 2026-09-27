@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.13
+
+- Align freezer setpoint decoding across both status packet formats using payload field 5.
+
 ## 1.0.12
 
 - Replace the experimental fridge door mapping with aligned payload field 56: zero is closed, any nonzero value is open.
