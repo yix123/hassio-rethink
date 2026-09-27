@@ -16,9 +16,9 @@ import AABBDevice from './aabb_device'
 // The related 2REF profile's freezer conversion fits both observations:
 //   C = -(raw + 29) / 2.
 //
-// User-selected hypothesis: aligned payload field 56 is closed at zero and open
+// User-tested door mapping: aligned payload field 56 is closed at zero and open
 // at any nonzero value. The shared payload starts at wire byte 15 in 0x0A
-// frames and byte 16 in 0x0B frames. This remains an experimental door mapping.
+// frames and byte 16 in 0x0B frames. User confirmed open/close detection works.
 const FRAME_CLASS = 0x10
 const FRAME_ENVELOPE = 0x0a
 const STATUS_VARIANTS = [0x0a, 0x0b]
@@ -61,7 +61,7 @@ export default class Device extends AABBDevice {
                         device_class: 'door',
                         unique_id: '$deviceid-door',
                         state_topic: '$this/door',
-                        name: 'Fridge door (experimental)',
+                        name: 'Fridge door',
                     },
                 },
             }),

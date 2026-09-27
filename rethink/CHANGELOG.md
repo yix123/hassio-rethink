@@ -2,6 +2,8 @@
 
 ## 1.0.14
 
+- Remove the experimental label from Fridge door after the user confirmed open/close detection.
+
 - Add a read-only fridge setpoint sensor using aligned payload field 6 and the related fridge Celsius mapping.
 
 ## 1.0.13
