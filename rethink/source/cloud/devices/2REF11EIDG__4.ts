@@ -18,10 +18,11 @@ import AABBDevice from './aabb_device'
 // Door is tentative: wire byte 68 was 0x01 before and just after the marked open action,
 // then changed to 0x02 about six seconds into the open interval. The close marker had no
 // later long status frame, so 0x02 => open is a working hypothesis, not a verified mapping.
-// Other 0x0A frames have a shifted layout; only decode the captured 0x0B frame variant.
+// The 0x0A variant is accepted for the setpoint only; its door offset is not established.
 const FRAME_CLASS = 0x10
 const FRAME_ENVELOPE = 0x0a
-const STATUS_VARIANT = 0x0b
+const STATUS_VARIANTS = [0x0a, 0x0b]
+const DOOR_VARIANT = 0x0b
 const FREEZER_SETPOINT_OFFSET = 19 // wire byte 21
 const DOOR_STATE_OFFSET = 66 // wire byte 68
 
@@ -60,14 +61,15 @@ export default class Device extends AABBDevice {
     }
 
     processAABB(buf: Buffer) {
-        // Raw frame: AA FF 10 0A 02 0B ...; after AABBDevice strips AA FF and the
-        // checksum/BB, these header bytes are buf[0..3].
+        // Raw frames use AA FF 10 0A 02 0A/0B. The 0x0A and 0x0B variants have
+        // slightly different lengths, but the observed freezer value stays at the
+        // same offset. Only the 0x0B variant has a correlated candidate door byte.
         if (
             buf.length <= DOOR_STATE_OFFSET ||
             buf[0] !== FRAME_CLASS ||
             buf[1] !== FRAME_ENVELOPE ||
             buf[2] !== 0x02 ||
-            buf[3] !== STATUS_VARIANT
+            !STATUS_VARIANTS.includes(buf[3])
         ) {
             return
         }
@@ -79,9 +81,11 @@ export default class Device extends AABBDevice {
             this.publishProperty('freezer_setpoint', -(freezerRaw + 29) / 2)
         }
 
-        const doorRaw = buf[DOOR_STATE_OFFSET]
-        if (doorRaw === 0x00 || doorRaw === 0x01 || doorRaw === DOOR_OPEN_CANDIDATE) {
-            this.publishProperty('door', doorRaw === DOOR_OPEN_CANDIDATE ? 'ON' : 'OFF')
+        if (buf[3] === DOOR_VARIANT) {
+            const doorRaw = buf[DOOR_STATE_OFFSET]
+            if (doorRaw === 0x00 || doorRaw === 0x01 || doorRaw === DOOR_OPEN_CANDIDATE) {
+                this.publishProperty('door', doorRaw === DOOR_OPEN_CANDIDATE ? 'ON' : 'OFF')
+            }
         }
     }
 }
